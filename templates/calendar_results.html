@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- ── Page Header ────────────────────────────────────────────────────── -->
+<section class="page-header">
+    <div class="container">
+        <span class="section-label">Compliance Calendar</span>
+        <h1>Your Filing Deadlines — <span class="text-gradient">{{ business_type }}</span></h1>
+        <p>Click on any highlighted date to see detailed filing information.</p>
+    </div>
+</section>
+
+<!-- ── Calendar Section ───────────────────────────────────────────────── -->
+<section>
+    <div class="container" style="max-width: 1100px;">
+
+        <!-- Legend -->
+        <div class="calendar-legend reveal">
+            <div class="legend-item"><span class="legend-dot safe"></span> Safe (15+ days)</div>
+            <div class="legend-item"><span class="legend-dot upcoming"></span> Upcoming (8-15 days)</div>
+            <div class="legend-item"><span class="legend-dot urgent"></span> Urgent (4-7 days)</div>
+            <div class="legend-item"><span class="legend-dot critical"></span> Critical (0-3 days)</div>
+            <div class="legend-item"><span class="legend-dot overdue"></span> Overdue</div>
+        </div>
+
+        <!-- Calendar Grid — rendered by JS -->
+        <div id="calendarContainer" class="calendar-container"></div>
+
+        <!-- Detail Modal -->
+        <div class="calendar-modal-overlay" id="calendarModal">
+            <div class="calendar-modal glass-card">
+                <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+                <div class="modal-date-badge" id="modalDate"></div>
+                <div id="modalContent"></div>
+            </div>
+        </div>
+
+        <!-- ── Compliance Summary ─────────────────────────────────────── -->
+        {% if summary %}
+        <div class="section-header reveal" style="margin-top: 4rem;">
+            <span class="section-label">Full Requirements</span>
+            <h2 class="section-title">All Compliance for <span class="text-gradient">{{ business_type }}</span></h2>
+        </div>
+
+        {% for category, filings in summary.items() %}
+        <div class="category-group reveal">
+            <div class="category-label">{{ category }}</div>
+            {% for filing in filings %}
+            <div class="glass-card deadline-card" style="margin-bottom: 0.75rem;">
+                <div class="deadline-info">
+                    <h4>{{ filing.name }}</h4>
+                    <p>{{ filing.description }}</p>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.3rem;">
+                        📋 {{ filing.frequency | capitalize }} filing — {{ filing.notes }}
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <!-- ── CTA ────────────────────────────────────────────────────── -->
+        <div class="cta-box reveal" style="margin-top: 3rem;">
+            <h2>Never Miss a Deadline Again. <span class="text-gradient">Let FileSure Handle It.</span></h2>
+            <p>Our team will track every deadline, file every return, and send you reminders — starting at just ₹999/month.</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="{{ url_for('services') }}" class="btn btn-primary btn-lg">View Plans</a>
+                <a href="{{ whatsapp_link }}" target="_blank" class="btn btn-whatsapp btn-lg">💬 Talk to Us</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── Calendar Data (passed from Flask to JS) ────────────────────────── -->
+<script>
+window.DEADLINE_DATA = [
+    {% for d in deadlines %}
+    {
+        name: {{ d.name | tojson }},
+        description: {{ d.description | tojson }},
+        category: {{ d.category | tojson }},
+        due_date: {{ d.due_date.isoformat() | tojson }},
+        due_date_formatted: {{ d.due_date_formatted | tojson }},
+        period: {{ d.period | tojson }},
+        days_left: {{ d.days_left | tojson }},
+        status: {{ d.status | tojson }},
+        penalty_info: {{ d.penalty_info | tojson }}
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+];
+</script>
+<script src="{{ url_for('static', filename='js/calendar.js', v=3) }}"></script>
+
+{% endblock %}

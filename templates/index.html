@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- ── Hero Section ────────────────────────────────────────────────────── -->
+<section class="hero" id="hero">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="dot"></span>
+                Serving MSMEs in Mumbai & Thane
+            </div>
+
+            <h1>
+                Stop Worrying About <span class="text-gradient">Compliance Deadlines.</span>
+                <br>We Handle It All.
+            </h1>
+
+            <p>
+                GST filing, TDS returns, ROC compliance, company incorporation — done right, on time, every time. Starting at just <strong>₹999/month</strong>.
+            </p>
+
+            <div class="hero-ctas">
+                <a href="{{ url_for('services') }}" class="btn btn-primary btn-lg">View Plans & Pricing</a>
+                <a href="{{ whatsapp_link }}" target="_blank" class="btn btn-whatsapp btn-lg">💬 WhatsApp Us</a>
+            </div>
+
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number" data-count="15" data-suffix="+">0</div>
+                    <div class="stat-label">Filing Types Covered</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">₹<span data-count="999">0</span></div>
+                    <div class="stat-label">Starting Price / Month</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="6">0</div>
+                    <div class="stat-label">Expert Team Members</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── Pain Points Section ────────────────────────────────────────────── -->
+<section class="pain-points" id="problems">
+    <div class="container">
+        <div class="section-header reveal">
+            <span class="section-label">The Problem</span>
+            <h2 class="section-title">Running a Business is Hard Enough.<br><span class="text-gradient">Compliance Shouldn't Be.</span></h2>
+            <p class="section-subtitle">Most small business owners face these compliance nightmares daily</p>
+        </div>
+
+        <div class="pain-grid stagger-children">
+            <div class="glass-card pain-card reveal">
+                <span class="pain-icon">📅</span>
+                <h3>Missed Deadlines</h3>
+                <p>GST, TDS, ROC — so many dates to track. Miss one and you're hit with penalties starting at ₹50/day.</p>
+            </div>
+            <div class="glass-card pain-card reveal">
+                <span class="pain-icon">💸</span>
+                <h3>Expensive CA Firms</h3>
+                <p>Traditional CA firms charge ₹15,000-50,000/year. That's too much for a small business doing ₹5-10 lakh turnover.</p>
+            </div>
+            <div class="glass-card pain-card reveal">
+                <span class="pain-icon">😵</span>
+                <h3>Confusing Portals</h3>
+                <p>GST portal, income tax portal, MCA portal — each has its own login, its own interface, its own problems.</p>
+            </div>
+            <div class="glass-card pain-card reveal">
+                <span class="pain-icon">⚠️</span>
+                <h3>Surprise Notices</h3>
+                <p>Got a GST notice? Income tax notice? Most small business owners panic — they don't even know what it means.</p>
+            </div>
+            <div class="glass-card pain-card reveal">
+                <span class="pain-icon">🔍</span>
+                <h3>No Visibility</h3>
+                <p>You don't know what's been filed, what's pending, or what's coming next. Zero transparency from your current CA.</p>
+            </div>
+            <div class="glass-card pain-card reveal">
+                <span class="pain-icon">🕐</span>
+                <h3>Wasted Time</h3>
+                <p>Hours spent on compliance is hours NOT spent on growing your business. You didn't start a business to file returns.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── Services / Pricing Section ─────────────────────────────────────── -->
+<section class="services-section" id="pricing">
+    <div class="container">
+        <div class="section-header reveal">
+            <span class="section-label">Plans & Pricing</span>
+            <h2 class="section-title">Transparent Pricing. <span class="text-gradient">No Hidden Fees.</span></h2>
+            <p class="section-subtitle">Choose the plan that fits your business. Upgrade or downgrade anytime.</p>
+        </div>
+
+        <div class="pricing-grid">
+            {% for plan in plans %}
+            <div class="pricing-card reveal {% if plan.highlight %}highlighted{% endif %}">
+                <h3>{{ plan.name }}</h3>
+                <p class="description">{{ plan.description }}</p>
+                <div class="price">
+                    <span class="currency">₹</span>{{ plan.price }}<span class="period">{{ plan.period }}</span>
+                </div>
+                <ul class="pricing-features">
+                    {% for feature in plan.features %}
+                    <li>{{ feature }}</li>
+                    {% endfor %}
+                </ul>
+                <a href="{{ whatsapp_link }}" target="_blank" class="btn {% if plan.highlight %}btn-primary{% else %}btn-secondary{% endif %}">
+                    {{ plan.cta }}
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ── How It Works ───────────────────────────────────────────────────── -->
+<section class="how-it-works" id="how-it-works">
+    <div class="container">
+        <div class="section-header reveal">
+            <span class="section-label">How It Works</span>
+            <h2 class="section-title">Three Simple Steps to <span class="text-gradient">Stress-Free Compliance</span></h2>
+        </div>
+
+        <div class="steps-grid">
+            <div class="step-card reveal">
+                <div class="step-number">1</div>
+                <h3>Share Your Details</h3>
+                <p>Tell us your business type, GST number, and current filing status. A quick WhatsApp chat or form is all it takes.</p>
+            </div>
+            <div class="step-card reveal">
+                <div class="step-number">2</div>
+                <h3>We Handle Everything</h3>
+                <p>Our CA/CS team files your returns, tracks deadlines, and sends you reminders. You get updates on WhatsApp.</p>
+            </div>
+            <div class="step-card reveal">
+                <div class="step-number">3</div>
+                <h3>You Stay Compliant</h3>
+                <p>No missed deadlines, no penalties, no stress. Focus on your business while we keep you 100% compliant.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── Team Section ───────────────────────────────────────────────────── -->
+<section class="team-section" id="team">
+    <div class="container">
+        <div class="section-header reveal">
+            <span class="section-label">Our Team</span>
+            <h2 class="section-title">Young Professionals. <span class="text-gradient">Serious Expertise.</span></h2>
+            <p class="section-subtitle">A unique blend of CA, CS, Finance, and Tech professionals working together for your business.</p>
+        </div>
+
+        <div class="team-grid stagger-children">
+            {% for member in team %}
+            <div class="glass-card team-card reveal">
+                <div class="team-avatar" style="background: {{ member.color }};">
+                    {{ member.initials }}
+                </div>
+                <h3>{{ member.name }}</h3>
+                <div class="team-role">{{ member.role }}</div>
+                <div class="team-credential">{{ member.credential }}</div>
+                <p>{{ member.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ── Compliance Calendar Tool ───────────────────────────────────────── -->
+<section class="compliance-tool" id="compliance-tool">
+    <div class="container">
+        <div class="section-header reveal">
+            <span class="section-label">Free Tool</span>
+            <h2 class="section-title">Check Your <span class="text-gradient">Compliance Calendar</span></h2>
+            <p class="section-subtitle">Enter your business type to see all upcoming filing deadlines, penalties, and compliance requirements.</p>
+        </div>
+
+        <div class="tool-wrapper reveal">
+            <form class="glass-card tool-form" action="{{ url_for('compliance_calendar') }}" method="POST">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Raj Sharma" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" class="form-control" placeholder="98XXXXXXXX" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="business_type">Business Type</label>
+                    <select id="business_type" name="business_type" class="form-control" required>
+                        <option value="" disabled selected>Select your business type</option>
+                        {% for key, label in business_types.items() %}
+                        <option value="{{ key }}">{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg" style="width:100%;">
+                    🔍 Show My Compliance Calendar
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- ── FAQ Section ────────────────────────────────────────────────────── -->
+<section class="faq-section" id="faq">
+    <div class="container">
+        <div class="section-header reveal">
+            <span class="section-label">FAQs</span>
+            <h2 class="section-title">Got Questions? <span class="text-gradient">We've Got Answers.</span></h2>
+        </div>
+
+        <div class="faq-list reveal">
+            {% for faq in faqs %}
+            <div class="faq-item">
+                <button class="faq-question" type="button">
+                    {{ faq.question }}
+                    <span class="icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>{{ faq.answer }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ── CTA Section ────────────────────────────────────────────────────── -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-box reveal">
+            <h2>Ready to Make Compliance <span class="text-gradient">Effortless?</span></h2>
+            <p>Join FileSure today. No contracts, no hidden fees. Cancel anytime.</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg">Get Started — ₹999/month</a>
+                <a href="{{ whatsapp_link }}" target="_blank" class="btn btn-whatsapp btn-lg">💬 Chat on WhatsApp</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

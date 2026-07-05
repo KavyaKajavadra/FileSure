@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- ── Page Header ────────────────────────────────────────────────────── -->
+<section class="page-header">
+    <div class="container">
+        <span class="section-label">Services & Pricing</span>
+        <h1>Everything Your Business Needs to <span class="text-gradient">Stay Compliant</span></h1>
+        <p>From GST filing to company incorporation — transparent pricing, no hidden fees, professional service.</p>
+    </div>
+</section>
+
+<!-- ── Monthly Plans ──────────────────────────────────────────────────── -->
+<section>
+    <div class="container">
+        <div class="section-header reveal">
+            <span class="section-label">Monthly Plans</span>
+            <h2 class="section-title">Choose Your <span class="text-gradient">Compliance Plan</span></h2>
+            <p class="section-subtitle">All plans include WhatsApp support and deadline reminders. Upgrade or switch anytime.</p>
+        </div>
+
+        <div class="pricing-grid">
+            {% for plan in plans %}
+            <div class="pricing-card reveal {% if plan.highlight %}highlighted{% endif %}">
+                <h3>{{ plan.name }}</h3>
+                <p class="description">{{ plan.description }}</p>
+                <div class="price">
+                    <span class="currency">₹</span>{{ plan.price }}<span class="period">{{ plan.period }}</span>
+                </div>
+                <ul class="pricing-features">
+                    {% for feature in plan.features %}
+                    <li>{{ feature }}</li>
+                    {% endfor %}
+                </ul>
+                <a href="{{ whatsapp_link }}" target="_blank" class="btn {% if plan.highlight %}btn-primary{% else %}btn-secondary{% endif %}">
+                    {{ plan.cta }}
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ── One-Time Services ──────────────────────────────────────────────── -->
+<section class="pain-points">
+    <div class="container">
+        <div class="section-header reveal">
+            <span class="section-label">One-Time Services</span>
+            <h2 class="section-title">Need Something <span class="text-gradient">Specific?</span></h2>
+            <p class="section-subtitle">Individual services with transparent pricing. No subscription needed.</p>
+        </div>
+
+        <div class="services-grid stagger-children">
+            {% for service in one_time_services %}
+            <div class="glass-card service-item reveal">
+                <span class="service-icon">{{ service.icon }}</span>
+                <h3>{{ service.name }}</h3>
+                <div class="service-price">
+                    <span class="currency-small">₹</span>{{ service.price }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ── Comparison: FileSure vs Traditional ─────────────────────────────── -->
+<section>
+    <div class="container">
+        <div class="section-header reveal">
+            <span class="section-label">Why FileSure</span>
+            <h2 class="section-title">FileSure vs <span class="text-gradient">Traditional CA Firms</span></h2>
+        </div>
+
+        <div class="reveal" style="overflow-x: auto;">
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>FileSure</th>
+                        <th>Traditional CA Firms</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Monthly GST Filing</td>
+                        <td style="color: var(--accent-emerald);">₹999/month ✓</td>
+                        <td>₹2,000-5,000/month</td>
+                    </tr>
+                    <tr>
+                        <td>Deadline Reminders</td>
+                        <td style="color: var(--accent-emerald);">Automated WhatsApp alerts ✓</td>
+                        <td>Manual / None</td>
+                    </tr>
+                    <tr>
+                        <td>Communication</td>
+                        <td style="color: var(--accent-emerald);">WhatsApp + Phone ✓</td>
+                        <td>Office visits / Email</td>
+                    </tr>
+                    <tr>
+                        <td>Transparency</td>
+                        <td style="color: var(--accent-emerald);">Fixed pricing, no surprises ✓</td>
+                        <td>Variable billing</td>
+                    </tr>
+                    <tr>
+                        <td>Response Time</td>
+                        <td style="color: var(--accent-emerald);">Within hours ✓</td>
+                        <td>Days to weeks</td>
+                    </tr>
+                    <tr>
+                        <td>Compliance Calendar</td>
+                        <td style="color: var(--accent-emerald);">Free tool included ✓</td>
+                        <td>Not offered</td>
+                    </tr>
+                    <tr>
+                        <td>Tech-Enabled</td>
+                        <td style="color: var(--accent-emerald);">Digital dashboard + tracking ✓</td>
+                        <td>Paper-based</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- ── CTA ─────────────────────────────────────────────────────────────── -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-box reveal">
+            <h2>Not Sure Which Plan is Right? <span class="text-gradient">Let's Talk.</span></h2>
+            <p>Send us a WhatsApp message with your business details. We'll recommend the perfect plan for you — no commitment.</p>
+            <a href="{{ whatsapp_link }}" target="_blank" class="btn btn-whatsapp btn-lg">💬 Get Free Consultation</a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

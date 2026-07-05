@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FileSure — {{ page_title }}</title>
+    <meta name="description" content="{{ page_description }}">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="FileSure — {{ page_title }}">
+    <meta property="og:description" content="{{ page_description }}">
+    <meta property="og:type" content="website">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css', v=3) }}">
+</head>
+<body>
+
+    <!-- ── Navbar ──────────────────────────────────────────────────────── -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <a href="{{ url_for('index') }}" class="logo">
+                <span class="logo-icon">F</span>
+                FileSure
+            </a>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Home</a></li>
+                <li><a href="{{ url_for('services') }}" class="{% if request.endpoint == 'services' %}active{% endif %}">Services</a></li>
+                <li><a href="{{ url_for('about') }}" class="{% if request.endpoint == 'about' %}active{% endif %}">About</a></li>
+                <li><a href="{{ url_for('contact') }}" class="{% if request.endpoint == 'contact' %}active{% endif %}">Contact</a></li>
+                <li><a href="{{ whatsapp_link }}" target="_blank" class="nav-cta">💬 WhatsApp Us</a></li>
+            </ul>
+
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ── Flash Messages ──────────────────────────────────────────────── -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-messages">
+        {% for category, message in messages %}
+        <div class="flash-message {{ category }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <!-- ── Main Content ────────────────────────────────────────────────── -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- ── Footer ──────────────────────────────────────────────────────── -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <span class="logo-icon">F</span>
+                        FileSure
+                    </div>
+                    <p>Affordable compliance and tax filing services for MSMEs and freelancers in Mumbai & Thane. File with confidence.</p>
+                    <a href="{{ whatsapp_link }}" target="_blank" class="btn btn-whatsapp btn-sm">💬 Chat on WhatsApp</a>
+                </div>
+                <div>
+                    <h4>Services</h4>
+                    <ul class="footer-links">
+                        <li><a href="{{ url_for('services') }}">GST Filing</a></li>
+                        <li><a href="{{ url_for('services') }}">TDS Returns</a></li>
+                        <li><a href="{{ url_for('services') }}">ROC Filing</a></li>
+                        <li><a href="{{ url_for('services') }}">Company Incorporation</a></li>
+                        <li><a href="{{ url_for('services') }}">Tax Advisory</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="{{ url_for('about') }}">About Us</a></li>
+                        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                        <li><a href="{{ url_for('index') }}#faq">FAQs</a></li>
+                        <li><a href="{{ url_for('index') }}#compliance-tool">Compliance Calendar</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Contact</h4>
+                    <ul class="footer-links">
+                        <li><a href="{{ whatsapp_link }}" target="_blank">WhatsApp</a></li>
+                        <li><a href="mailto:hello@filesure.in">hello@filesure.in</a></li>
+                        <li>Mumbai & Thane</li>
+                        <li>Maharashtra, India</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; {{ current_year }} FileSure. All rights reserved.</p>
+                <p>Made with 💙 in Mumbai</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ── Scripts ─────────────────────────────────────────────────────── -->
+    <script src="{{ url_for('static', filename='js/animations.js', v=2) }}"></script>
+</body>
+</html>
