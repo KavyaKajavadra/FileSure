@@ -5,13 +5,19 @@ MSME Compliance & Freelancer Financial Checkup Platform
 
 import os
 from datetime import datetime
+from dotenv import load_dotenv
+load_dotenv()  # Load environment variables from .env file
+
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from twilio.twiml.messaging_response import MessagingResponse
+
 from compliance import (
     BUSINESS_TYPES,
     calculate_upcoming_deadlines,
     get_compliance_summary,
 )
+from chatbot import get_ai_response
 
 # ── App Configuration ────────────────────────────────────────────────────────
 
@@ -45,6 +51,22 @@ class Lead(db.Model):
 
     def __repr__(self):
         return f"<Lead {self.name} — {self.phone}>"
+
+import json
+
+class WhatsAppSession(db.Model):
+    """Stores active WhatsApp conversations to track history and human handoff state."""
+    id = db.Column(db.Integer, primary_key=True)
+    phone_number = db.Column(db.String(20), unique=True, nullable=False)
+    history = db.Column(db.Text, default="[]")  # Stored as JSON string
+    needs_human = db.Column(db.Boolean, default=False)
+    last_message_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def get_history(self):
+        return json.loads(self.history)
+
+    def set_history(self, history_list):
+        self.history = json.dumps(history_list)
 
 
 # ── Service Data ─────────────────────────────────────────────────────────────
@@ -299,6 +321,60 @@ def compliance_calendar():
         page_title=f"Compliance Calendar — {business_label}",
         page_description=f"Your personalized compliance calendar for {business_label}. See all upcoming GST, TDS, ROC, and tax filing deadlines.",
     )
+
+
+# ── WhatsApp AI Webhook ──────────────────────────────────────────────────────
+
+@app.route("/whatsapp/webhook", methods=["POST"])
+def whatsapp_webhook():
+    """Endpoint for Twilio to send incoming WhatsApp messages."""
+    incoming_msg = request.values.get("Body", "").strip()
+    sender_phone = request.values.get("From", "")
+
+    # Retrieve or create session
+    session = WhatsAppSession.query.filter_by(phone_number=sender_phone).first()
+    if not session:
+        session = WhatsAppSession(phone_number=sender_phone)
+        db.session.add(session)
+        db.session.commit()
+        
+    session.last_message_at = datetime.utcnow()
+    
+    twiml_response = MessagingResponse()
+
+    # If already handed off, do not let AI respond
+    if session.needs_human:
+        db.session.commit()
+        return str(twiml_response) # Send empty response (human will reply)
+
+    # Get conversation history
+    history = session.get_history()
+    
+    # Generate AI response
+    ai_result = get_ai_response(incoming_msg, history)
+    reply_text = ai_result["text"]
+    
+    # Update history
+    history.append({"role": "user", "parts": [incoming_msg]})
+    history.append({"role": "model", "parts": [reply_text]})
+    
+    # Keep history manageable (last 10 turns = 20 messages)
+    if len(history) > 20:
+        history = history[-20:]
+        
+    session.set_history(history)
+    
+    # Check if handoff was triggered
+    if ai_result["handoff"]:
+        session.needs_human = True
+        
+    db.session.commit()
+    
+    # Send reply via Twilio
+    msg = twiml_response.message()
+    msg.body(reply_text)
+    
+    return str(twiml_response)
 
 
 # ── Database Initialization ──────────────────────────────────────────────────
