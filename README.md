@@ -2,36 +2,45 @@
 
 FileSure is a complete Flask-based web application designed to offer MSMEs, startups, and freelancers affordable tax and compliance filing services. It includes a smart compliance engine that calculates and visually plots upcoming deadlines on an interactive calendar.
 
-## Features
+## 🚀 Features
 
 - **Compliance Engine (`compliance.py`)**: Computes filing deadlines (GST, TDS, ROC, Income Tax) over a rolling 6-month window based on business type and registration rules.
 - **Interactive Visual Calendar**: A dynamically rendered JavaScript grid showing safe, upcoming, urgent, and critical deadlines.
-- **Service & Pricing Showcase**: Clean comparison tables and pricing cards contrasting FileSure with traditional CA firms.
-- **Lead Capture & Database**: Fully functioning SQLAlchemy models capturing form submissions and calendar inquiries.
-- **Modern Glassmorphism UI**: High-end aesthetic using deep navy themes, glass cards, micro-animations, and responsive layouts.
+- **Dedicated Service Pages**: SEO-optimized, dynamic detail pages for all major services (GST, ROC, ITR, etc.) with process timelines and penalty warnings.
+- **AI Chatbot (`chatbot.py`)**: Integrated Google Gemini AI to instantly answer client compliance questions directly on the website.
+- **Twilio WhatsApp Bot**: Automated server-side webhook that replies to WhatsApp messages with a professional greeting and links.
+- **Security & CI/CD**: Automated GitHub Actions workflow using `vulnledger` to block vulnerable packages from production.
+- **Serverless Ready**: Configured via `vercel.json` and a clean `requirements.txt` for instant, free deployment on Vercel.
 
-## Tech Stack
+## 💻 Tech Stack
 
-- **Backend**: Python 3.10+, Flask, SQLAlchemy
-- **Database**: SQLite (Development) / easily upgradeable to PostgreSQL
+- **Backend**: Python 3.10+, Flask, Flask-SQLAlchemy
+- **AI & Integrations**: Google Gemini AI API, Twilio Messaging API
+- **Database**: SQLite (routes to `/tmp` in serverless environments)
 - **Frontend**: HTML5, Jinja2, Vanilla CSS (Glassmorphism design), Vanilla JS
+- **Deployment & CI**: Vercel Serverless Functions, GitHub Actions
 
-## Installation and Setup
+## ⚙️ Installation and Setup
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/YOUR_USERNAME/FileSure.git
+   git clone https://github.com/KavyaKajavadra/FileSure.git
    cd FileSure
    ```
 
-2. **Create a virtual environment (optional but recommended)**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows use: venv\Scripts\activate
+2. **Set up Environment Variables**
+   Create a `.env` file in the root directory:
+   ```env
+   SECRET_KEY=your-secret-key
+   GEMINI_API_KEY=your-google-gemini-key
+   TWILIO_ACCOUNT_SID=your-twilio-sid
+   TWILIO_AUTH_TOKEN=your-twilio-token
    ```
 
-3. **Install dependencies**
+3. **Create a virtual environment & Install dependencies**
    ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
    pip install -r requirements.txt
    ```
 
@@ -39,17 +48,25 @@ FileSure is a complete Flask-based web application designed to offer MSMEs, star
    ```bash
    python app.py
    ```
+   Navigate to `http://127.0.0.1:5000`
 
-5. **Access the site**
-   Open your browser and navigate to `http://127.0.0.1:5000`
+## 🚀 Deployment (Vercel)
 
-## Project Structure
+FileSure is optimized for free Serverless hosting on Vercel:
+1. Import the repository into your Vercel dashboard.
+2. Add the environment variables from your `.env` file into the Vercel Settings.
+3. Click **Deploy**. Vercel will automatically read `vercel.json`, install dependencies, and launch the site.
+
+## 📂 Project Structure
 
 ```text
 FileSure/
-├── app.py                 # Flask server, routes, and DB models
+├── app.py                 # Flask server, Twilio webhooks, routes, and DB models
 ├── compliance.py          # Deadline calculation engine for GST, ROC, TDS, etc.
-├── requirements.txt       # Python dependencies
+├── chatbot.py             # Google Gemini AI integrations
+├── requirements.txt       # Clean dependency list
+├── vercel.json            # Vercel Serverless Function config
+├── .github/workflows/     # GitHub Actions (Security pipeline)
 ├── static/
 │   ├── css/
 │   │   └── main.css       # Core design system and styles
@@ -60,6 +77,7 @@ FileSure/
     ├── base.html
     ├── index.html
     ├── services.html
+    ├── service_detail.html
     ├── about.html
     ├── contact.html
     └── calendar_results.html
