@@ -681,7 +681,7 @@ def admin_login():
     """Simple admin login page."""
     if request.method == "POST":
         password = request.form.get("password", "")
-        admin_password = os.environ.get("ADMIN_PASSWORD", "filingdeck2026")
+        admin_password = os.environ.get("ADMIN_PASSWORD", "Kaivabhai")
         
         if password == admin_password:
             session["is_admin"] = True
