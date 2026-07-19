@@ -528,10 +528,10 @@ SERVICE_DETAILS = [
         "id": "accounting",
         "icon": "📊",
         "name": "Accounting & Bookkeeping",
-        "tagline": "Accurate, up-to-date financials tailored to your business volume",
+        "tagline": "Ongoing, year-round maintenance of your books, tailored to your business volume",
         "meta_title": "Accounting & Bookkeeping Services | FilingDeck",
         "meta_description": "Professional accounting and bookkeeping services for MSMEs and freelancers. Clean books, accurate P&L, and seamless tax prep.",
-        "what": "Bookkeeping involves the daily recording of all financial transactions of your business, while accounting uses that data to generate financial statements (P&L, Balance Sheet) and provide insights into your business health.",
+        "what": "Accounting and bookkeeping is a continuous, year-round service—not a one-time task. We maintain the daily recording of all your financial transactions throughout the year, generating accurate financial statements (P&L, Balance Sheet) to give you constant insights into your business health.",
         "benefits": [
             "Clear visibility into your business profitability",
             "Easier and faster GST and Income Tax filings",
@@ -553,8 +553,8 @@ SERVICE_DETAILS = [
             {"title": "Reporting", "desc": "Receive monthly or quarterly financial summaries of your business health."},
         ],
         "faqs": [
-            {"q": "Do I need bookkeeping if my business is small?", "a": "Yes! Good bookkeeping helps you claim all eligible tax deductions and prevents mixing personal and business expenses."},
-            {"q": "How much does it cost?", "a": "Our pricing is custom because it depends entirely on the volume of transactions you have per month. Reach out for a quick quote."},
+            {"q": "Is this a one-time service?", "a": "No, accounting and bookkeeping is an ongoing, year-round engagement. We continuously maintain your books to ensure your financials are always up-to-date."},
+            {"q": "How much does it cost?", "a": "Our monthly pricing is custom because it depends entirely on the volume of transactions you have per month. Reach out for a quick quote."},
         ],
         "penalty": "Poor accounting leads to missed tax deductions, incorrect tax filings resulting in notices, and cash flow crises.",
         "color": "#3b82f6",
