@@ -6,6 +6,8 @@ FilingDeck is a complete Flask-based web application designed to offer MSMEs, st
 
 - **Compliance Engine (`compliance.py`)**: Computes filing deadlines (GST, TDS, Income Tax) over a rolling 6-month window based on business type and registration rules.
 - **Interactive Visual Calendar**: A dynamically rendered JavaScript grid showing safe, upcoming, urgent, and critical deadlines.
+- **Client Dashboard Infrastructure**: A backend SQL architecture designed to manage users, compliance documents, and customized 'decks' for document organization.
+- **Global Dark Mode**: Full UI support for light/dark modes that dynamically adapts to system preferences and remembers user choices.
 - **Dedicated Service Pages**: SEO-optimized, dynamic detail pages for all major services (GST, ITR, etc.) with process timelines and penalty warnings.
 - **AI Chatbot (`chatbot.py`)**: Integrated Google Gemini AI to instantly answer client compliance questions directly on the website.
 - **Twilio WhatsApp Bot**: Automated server-side webhook that replies to WhatsApp messages with a professional greeting and links.
@@ -17,7 +19,7 @@ FilingDeck is a complete Flask-based web application designed to offer MSMEs, st
 - **Backend**: Python 3.10+, Flask, Flask-SQLAlchemy
 - **AI & Integrations**: Google Gemini AI API, Twilio Messaging API
 - **Database**: SQLite (routes to `/tmp` in serverless environments)
-- **Frontend**: HTML5, Jinja2, Vanilla CSS (Glassmorphism design), Vanilla JS
+- **Frontend**: HTML5, Jinja2, Tailwind CSS, Vanilla JS
 - **Deployment & CI**: Vercel Serverless Functions, GitHub Actions
 
 ## ⚙️ Installation and Setup
@@ -59,9 +61,8 @@ FilingDeck is optimized for free Serverless hosting on Vercel:
 
 ## 📂 Project Structure
 
-```text
 FilingDeck/
-├── app.py                 # Flask server, Twilio webhooks, routes, and DB models
+├── app.py                 # Flask server, Twilio webhooks, routes, and DB models (User, Deck)
 ├── compliance.py          # Deadline calculation engine for GST, TDS, etc.
 ├── chatbot.py             # Google Gemini AI integrations
 ├── requirements.txt       # Clean dependency list
@@ -69,18 +70,22 @@ FilingDeck/
 ├── .github/workflows/     # GitHub Actions (Security pipeline)
 ├── static/
 │   ├── css/
-│   │   └── main.css       # Core design system and styles
+│   │   └── main.css       # Legacy styles (transitioning to Tailwind)
+│   ├── images/
+│   │   └── logo.png       # Official F-Shield Brand Logo
 │   └── js/
 │       ├── animations.js  # Scroll reveal and frontend micro-animations
 │       └── calendar.js    # Logic for rendering the interactive visual calendar
 └── templates/             # Jinja2 HTML templates
-    ├── base.html
+    ├── base.html          # Master layout with global Dark Mode logic
     ├── index.html
     ├── services.html
     ├── service_detail.html
     ├── about.html
     ├── contact.html
-    └── calendar_results.html
+    ├── calendar_results.html
+    ├── dashboard.html     # Client portal home (Work in Progress)
+    └── deck_detail.html   # Client portal deck view (Work in Progress)
 ```
 
 ## Contributing
