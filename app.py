@@ -76,6 +76,24 @@ class WhatsAppSession(db.Model):
         self.history = json.dumps(history_list)
 
 
+class User(db.Model):
+    """Stores user accounts for the dashboard."""
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(120), unique=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    decks = db.relationship('Deck', backref='owner', lazy=True)
+
+class Deck(db.Model):
+    """Stores a user's compliance decks."""
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    name = db.Column(db.String(150), nullable=False)
+    file_count = db.Column(db.Integer, default=0)
+    last_modified = db.Column(db.String(50)) # Storing as string for display purposes, e.g. '2 mins ago'
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+
 # ── Service Data ─────────────────────────────────────────────────────────────
 
 PLANS = [
@@ -587,6 +605,28 @@ def service_detail(service_id):
     )
 
 
+@app.route("/dashboard")
+def dashboard():
+    """Render the logged-in dashboard view."""
+    # Fetch the first user (mock logged-in user)
+    user = User.query.first()
+    if user:
+        decks = Deck.query.filter_by(user_id=user.id).all()
+    else:
+        decks = []
+    
+    return render_template("dashboard.html", user=user, decks=decks)
+
+
+@app.route("/deck/<deck_id>")
+def deck_detail(deck_id):
+    """Render the detail view for a specific deck."""
+    deck = Deck.query.get_or_404(deck_id)
+    # Fetch user for the sidebar
+    user = User.query.get(deck.user_id)
+    return render_template("deck_detail.html", deck=deck, user=user)
+
+
 @app.route("/about")
 def about():
     """About page with team profiles."""
@@ -719,6 +759,17 @@ def whatsapp_webhook():
 with app.app_context():
     try:
         db.create_all()
+        # Seed the database with a user and some decks if it's empty
+        if not User.query.first():
+            demo_user = User(name="Kavya", email="kavya@example.com")
+            db.session.add(demo_user)
+            db.session.commit()
+            
+            deck1 = Deck(user_id=demo_user.id, name="Q1 Tax Documents", file_count=12, last_modified="2 hours ago")
+            deck2 = Deck(user_id=demo_user.id, name="Company Incorporation", file_count=5, last_modified="1 day ago")
+            deck3 = Deck(user_id=demo_user.id, name="GST Returns 2025", file_count=24, last_modified="Just now")
+            db.session.add_all([deck1, deck2, deck3])
+            db.session.commit()
     except Exception as e:
         print(f"Warning: Could not create database tables (expected on read-only serverless platforms): {e}")
 
